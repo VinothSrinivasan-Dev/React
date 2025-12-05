@@ -7,6 +7,7 @@ import axios from 'axios';
 export function Homepage() {
 
     const[products,setProducts] =useState([]);
+    const[cart,setCart] = useState([]);
 
 
     useEffect(()=>{
@@ -14,6 +15,11 @@ export function Homepage() {
         .then((response)=> {
           setProducts(response.data)
          });
+
+        axios.get('http://localhost:3000/api/cart-items') 
+          .then((response)=>{
+           setCart(response.data)
+          })
     },[]);
 
     
@@ -23,7 +29,7 @@ export function Homepage() {
             <title>Ecommerce Project</title>
 
 
-            <Header />
+            <Header cart={cart}/>
 
             <div className="home-page">
                 <div className="products-grid">
