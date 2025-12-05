@@ -1,11 +1,11 @@
 
-import { Homepage } from './pages/HomePage'
+import { Homepage } from './pages/Home/HomePage'
 import { Routes, Route } from 'react-router'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './App.css'
-import { CheckoutPage } from './pages/CheckoutPage'
-import { OrdersPage } from './pages/OrdersPage'
+import { CheckoutPage } from './pages/Checkout/CheckoutPage'
+import { OrdersPage } from './pages/Orders/OrdersPage'
 
 function App() {
 
