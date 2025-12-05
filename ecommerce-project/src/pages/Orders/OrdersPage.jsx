@@ -1,6 +1,6 @@
 import './OrdersPage.css';
 import axios from 'axios';
-import { useEffect, useState , Fragment} from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { Header } from '../../components/Header';
 import { formatMoney } from '../../utils/money';
 import dayjs from 'dayjs';
@@ -11,10 +11,14 @@ export function OrdersPage({ cart }) {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/orders?expand=products')
-            .then((response) => {
-                setOrders(response.data);
-            })
+        async function getProducts() {
+            const response = await axios.get('/api/orders?expand=products')
+
+            setOrders(response.data);
+
+        }
+        getProducts();
+
     }, [])
     return (
         <>
@@ -63,7 +67,7 @@ export function OrdersPage({ cart }) {
                                                     </div>
                                                     <div className="product-delivery-date">
                                                         Arriving on: {dayjs(orderProduct.estimatedDeliveryTimeMs).format("MMMM D")}
-                                                        
+
                                                     </div>
                                                     <div className="product-quantity">
                                                         Quantity: {orderProduct.quantity}

@@ -6,32 +6,33 @@ import { ProductsGrid } from './ProductsGrid';
 
 
 
-export function Homepage({cart}) {
+export function Homepage({ cart }) {
 
-    const[products,setProducts] =useState([]);
- 
+    const [products, setProducts] = useState([]);
 
 
-    useEffect(()=>{
-     axios.get('http://localhost:3000/api/products')
-        .then((response)=> {
-          setProducts(response.data)
-         });
 
-       
-    },[]);
+    useEffect( () => {
+        async function getHomeData() {
+            const response = await axios.get('http://localhost:3000/api/products');
+            setProducts(response.data)
+        }
 
-    
+   getHomeData();
+
+    }, []);
+
+
 
     return (
         <>
             <title>Ecommerce Project</title>
 
 
-            <Header cart={cart}/>
+            <Header cart={cart} />
 
             <div className="home-page">
-                <ProductsGrid products={products}/>
+                <ProductsGrid products={products} />
             </div>
         </>
     );
