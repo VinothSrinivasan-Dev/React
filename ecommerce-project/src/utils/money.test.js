@@ -3,6 +3,7 @@ import { it, expect, describe } from 'vitest';
 import { formatMoney } from './money.js';
 
 
+// Unit test for formatMoney function
 
 // it - create a test case
 //descibe - group of test cases
