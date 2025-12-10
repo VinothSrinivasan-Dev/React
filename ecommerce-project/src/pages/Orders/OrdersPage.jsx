@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { TrackingPage } from '../../components/TrackingPage';
 
 
-export function OrdersPage({ cart }) {
+export function OrdersPage({ cart, loadCart }) {
 
     const [orders, setOrders] = useState([]);
 
@@ -17,9 +17,9 @@ export function OrdersPage({ cart }) {
             const response = await axios.get('/api/orders?expand=products')
 
             setOrders(response.data);
-
         }
         getProducts();
+
 
     }, [])
     return (
@@ -57,6 +57,13 @@ export function OrdersPage({ cart }) {
 
                                 <div className="order-details-grid">
                                     {order.products.map((orderProduct) => {
+                                        const addToCart = async () => {
+                                            await axios.post('/api/cart-items', {
+                                                productId: orderProduct.product.id,
+                                                quantity:1
+                                            })
+                                            await loadCart();
+                                        };
                                         return (
                                             <Fragment key={orderProduct.id}>
                                                 <div className="product-image-container">
@@ -74,9 +81,11 @@ export function OrdersPage({ cart }) {
                                                     <div className="product-quantity">
                                                         Quantity: {orderProduct.quantity}
                                                     </div>
-                                                    <button className="buy-again-button button-primary">
+                                                    <button className="buy-again-button button-primary" onClick={addToCart}>
                                                         <img className="buy-again-icon" src="images/icons/buy-again.png" />
-                                                        <span className="buy-again-message">Add to Cart</span>
+                                                        <span className="buy-again-message"
+
+                                                        >Add to Cart</span>
                                                     </button>
                                                 </div>
 

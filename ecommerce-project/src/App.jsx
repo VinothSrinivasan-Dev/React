@@ -10,6 +10,7 @@ import { TrackingPage } from './components/TrackingPage'
 
 function App() {
 
+
   const [cart, setCart] = useState([]);
 
   const loadCart = async () => {
@@ -25,7 +26,7 @@ function App() {
     <Routes>
       <Route index element={<Homepage  cart={cart} loadCart={loadCart}/>} />
       <Route path="checkout" element={<CheckoutPage  cart={cart} loadCart={loadCart} />} />
-      <Route path='orders' element={<OrdersPage cart={cart} />} />
+      <Route path='orders' element={<OrdersPage cart={cart} loadCart={loadCart}/>} />
       <Route path='tracking/:orderId/:productId' element={<TrackingPage cart={cart}/>} />
 
     </Routes>
