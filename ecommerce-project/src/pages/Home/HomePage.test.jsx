@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
-import { HomePage } from './HomePage';
+import { Homepage } from './HomePage.jsx';
 
 vi.mock('axios');
 
@@ -14,7 +14,7 @@ describe('HomePage component', () => {
     loadCart = vi.fn();
 
     axios.get.mockImplementation(async (urlPath) => {
-      if (urlPath === '/api/products') {
+      if (urlPath.startsWith('http://localhost:3000/api/products')) {
         return {
           data: [{
             id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -46,9 +46,10 @@ describe('HomePage component', () => {
   it('displays the products correct', async () => {
     render(
       <MemoryRouter>
-        <HomePage cart={[]} loadCart={loadCart} />
+        <Homepage cart={[]} loadCart={loadCart} />
       </MemoryRouter>
     );
+     
     const productContainers = await screen.findAllByTestId('product-container');
 
     expect(productContainers.length).toBe(2);
