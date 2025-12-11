@@ -8,13 +8,15 @@ import axios from 'axios';
 vi.mock('axios');
 
 describe('Product Component', () => {
-    let product ;
+    let product;
 
-        let loadCart; //Create a mock function
+    let user;
 
-        beforeEach(()=>{
-            //Before each test clear all mock calls and instances. recreate the product and loadCart function
-            product = {
+    let loadCart; //Create a mock function
+
+    beforeEach(() => {
+        //Before each test clear all mock calls and instances. recreate the product and loadCart function
+        product = {
             id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
             image: "images/products/athletic-cotton-socks-6-pairs.jpg",
             name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
@@ -27,12 +29,13 @@ describe('Product Component', () => {
         };
 
         loadCart = vi.fn();
-        })
+         user = userEvent.setup();
+    })
 
 
     it('displays the product details correctly', () => {
 
-        
+
         render(<Product product={product} loadCart={loadCart} />);
 
         expect(
@@ -57,11 +60,11 @@ describe('Product Component', () => {
 
     });
 
-    it('adds a product to the cart',async () => {
+    it('adds a product to the cart', async () => {
 
         render(<Product product={product} loadCart={loadCart} />);
 
-        const user = userEvent.setup();
+        
 
         const addToCartButton = screen.getByTestId('add-to-cart-button');
 
@@ -70,13 +73,43 @@ describe('Product Component', () => {
 
         expect(axios.post).toHaveBeenCalledWith('/api/cart-items',
             {
-            productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-            quantity: 1
-        });
+                productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+                quantity: 1
+            });
 
         expect(loadCart).toHaveBeenCalled();
 
+
+
     })
+    it('Quantity selection works correctly', async () => {
+
+        render(<Product product={product} loadCart={loadCart} />);
+
+        user= userEvent.setup();
+// Since User events are asynchornous we need to await them
+       await  user.selectOptions(
+            screen.getByTestId('product-quantity-select'),
+            '3'
+        );
+
+
+        expect(
+            screen.getByTestId('product-quantity-select' )
+        ).toHaveValue('3');
+        
+        await user.click(screen.getByTestId('add-to-cart-button'));
+
+        expect(axios.post).toHaveBeenCalledWith('/api/cart-items',
+            {
+                productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+                quantity: 3
+            });
+
+        expect(loadCart).toHaveBeenCalled();
+        // expect(screen.getByTestId('product-quantity-select')
+        // ).toHaveValue('1');
+    });
 
 });
 

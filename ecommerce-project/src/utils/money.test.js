@@ -17,4 +17,11 @@ describe('formatMoney', () => {
         expect(formatMoney(1090)).toBe('$10.90');
         expect(formatMoney(100)).toBe('$1.00');
     })
+    it('roucnds correctly', () => {
+        expect(formatMoney(0)).toBe('$0.00');
+    });
+
+    it('Handles neagative amounts', () => {
+        expect(formatMoney(-9000)).toBe('$-90.00');
+    });
 })
